@@ -1,9 +1,9 @@
-from jostedal.stun.client import StunUdpClient, TransactionError
-from jostedal import stun, turn
-from jostedal.stun.agent import Message
-from jostedal.turn import attributes
-from jostedal.stun.authentication import LongTermCredentialMechanism
 import logging
+from ..stun.client import StunUdpClient, TransactionError
+from .. import stun, turn
+from ..stun.agent import Message
+from ..stun.authentication import LongTermCredentialMechanism
+from . import attributes
 
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,6 @@
 import struct
-from jostedal.stun.agent import attribute, Address, Attribute
-from jostedal import turn
+from ..stun.agent import attribute, Address, Attribute
+from . import turn
 
 
 @attribute
@@ -14,7 +14,7 @@ class ChannelNumber(Attribute):
     @classmethod
     def decode(cls, data, offset, length):
         channel_number = struct.unpack_from('>H2x', data, offset)
-        return cls(buffer(data, offset, length), channel_number)
+        return cls(bytes(data[offset:offset+length]), channel_number)
     type = turn.ATTR_CHANNEL_NUMBER
 
 
@@ -32,7 +32,7 @@ class Lifetime(Attribute):
     @classmethod
     def decode(cls, data, offset, length):
         lifetime, = cls._struct.unpack_from(data, offset)
-        return cls(buffer(data, offset, length), lifetime)
+        return cls(bytes(data[offset:offset+length]), lifetime)
 
     @classmethod
     def encode(cls, msg, time_to_expiry):
@@ -102,7 +102,7 @@ class RequestedTransport(Attribute):
     @classmethod
     def decode(cls, data, offset, length):
         protocol, = cls._struct.unpack_from(data, offset)
-        return cls(buffer(data, offset, length), protocol)
+        return cls(bytes(data[offset:offset+length]), protocol)
 
     def __repr__(self, *args, **kwargs):
         return "REQUESTED-TRANSPORT({:#02x})".format(self.protocol)

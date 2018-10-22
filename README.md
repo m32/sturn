@@ -1,6 +1,6 @@
-# Jostedal
+# Sturn
 
-The primary purpose of the project is to support testing of ICE and TURN.
+NAT travelsal client and server using STUN and TURN protocols.
 
 
 ## Features

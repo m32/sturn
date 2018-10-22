@@ -19,22 +19,16 @@ except:
     logging.exception("Failed to load 'logging.config' file")
 
 
-try:
-    interface = sys.argv[1]
-    options = [3478, 'sturn.config']
-    for i, option in enumerate(sys.argv[2:]):
-        options[i] = option
-    port = int(options[0])
-    config_file = options[1]
-except:
-    exit(__doc__.format(os.path.basename(__file__)))
+interface = '192.168.2.104'
+port = 3478
+config_file = 'example.config'
 
 
 try:
     with open(config_file) as fp:
         config = json.load(fp)
     software = config['software']
-    realm = config['realm']
+    realm = bytes(config['realm'].encode('utf-8'))
     users = config['users']
     overrides = config.get('overrides') or {}
 except:

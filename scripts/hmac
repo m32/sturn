@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env vpython3
 """Generate a HMAC-SHA1 for use by the Long Term credential mechanism
 Usage:
     {0} USERNAME REALM [PASSWORD]
 """
 
 import os, sys, getpass
-from jostedal.utils import ha1
+from sturn.utils import ha1
 
 try:
     username, realm = sys.argv[1:3]

@@ -1,9 +1,9 @@
-from jostedal.stun.server import StunUdpServer
-from jostedal import turn, stun
-from jostedal.stun.attributes import ErrorCode, XorMappedAddress
-from jostedal.turn.attributes import XorRelayedAddress, ReservationToken, Lifetime
-from jostedal.stun.agent import Address
-from jostedal.turn.relay import Relay
+from ..stun.server import StunUdpServer
+from .. import turn, stun
+from ..stun.attributes import ErrorCode, XorMappedAddress
+from .attributes import XorRelayedAddress, ReservationToken, Lifetime
+from ..stun.agent import Address
+from .relay import Relay
 
 
 class TurnUdpServer(StunUdpServer):

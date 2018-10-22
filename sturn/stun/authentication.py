@@ -1,7 +1,7 @@
-from jostedal.utils import saslprep, ha1
-from jostedal.stun import attributes
 import os
 import logging
+from ..utils import saslprep, ha1
+from . import attributes
 
 
 logger = logging.getLogger(__name__)
@@ -33,25 +33,29 @@ class LongTermCredentialMechanism(CredentialMechanism):
         self.nonce = self.generate_nonce()
         self.realm = realm
         self.hmac_keys = {}
-        for username, credentials in users.iteritems():
+        for username, credentials in users.items():
             key = credentials.get('key')
-            if not key:
+            if key:
+                self.hmac_keys[username] = key
+            else:
                 password = credentials.get('password')
                 if not password:
                     logger.warning("Invalid credentials for %s", username)
                     continue
-            self.hmac_keys[username] = ha1(username, self.realm, password)
+                self.hmac_keys[username] = ha1(username, self.realm, password)
 
     def add_user(self, username, password):
         self.hmac_keys[username] = ha1(username, self.realm, password)
 
     def generate_nonce(self, length=16):
-        return os.urandom(length//2).encode('hex')
+        b = os.urandom(length//2)
+        b = bytes(b.hex().encode('utf-8'))
+        return b
 
     def update(self, msg):
         msg.add_attr(attributes.Nonce, self.nonce)
         msg.add_attr(attributes.Realm, self.realm)
-        msg.add_attr(attributes.MessageIntegrity, self.hmac_keys.values()[0])
+        msg.add_attr(attributes.MessageIntegrity, list(self.hmac_keys.values())[0])
 
     def __str__(self):
         return "realm={}".format(self.realm)

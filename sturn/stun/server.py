@@ -1,8 +1,10 @@
 import logging
-from jostedal.stun.agent import StunUdpProtocol
-from jostedal.stun import attributes
-from jostedal import stun
-from jostedal.stun.agent import Message, Address
+from .protocol import StunUdpProtocol
+from . import attributes
+from . import stun
+from .agent import Message, Address
+
+
 logger = logging.getLogger(__name__)
 
 

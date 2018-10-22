@@ -1,8 +1,8 @@
 from twisted.internet.protocol import DatagramProtocol
-from jostedal.stun.agent import Address, Message
+from ..stun.agent import Address, Message
 import logging
-from jostedal import stun, turn
-from jostedal.turn import attributes
+from .. import stun, turn
+from . import attributes
 
 
 logger = logging.getLogger(__name__)

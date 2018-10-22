@@ -1,17 +1,18 @@
-from twisted.internet import defer
-from jostedal.stun.agent import StunUdpProtocol, Message
-from jostedal.stun.authentication import CredentialMechanism
-from jostedal import stun
-from jostedal.stun import attributes
 import logging
+from twisted.internet import defer
+from .protocol import StunUdpProtocol
+from .agent import Message
+from .authentication import CredentialMechanism
+from . import stun
+from . import attributes
 
 
 logger = logging.getLogger(__name__)
 
 
 class StunUdpClient(StunUdpProtocol):
-    def __init__(self, reactor, port=0):
-        StunUdpProtocol.__init__(self, reactor, port)
+    def __init__(self, reactor, interface, port=0, software='jostedal', RTO=3., Rc=7, Rm=16):
+        StunUdpProtocol.__init__(self, reactor, interface, port, software, RTO, Rc, Rm)
         self._transactions = {}
         self.credential_mechanism = CredentialMechanism()
 
