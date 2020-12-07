@@ -54,7 +54,7 @@ class Message(bytearray):
         assert data[0] >> 6 == stun.MSG_STUN, \
             "Stun message MUST start with 0b00"
         msg_type, msg_length, magic_cookie, transaction_id = cls._struct.unpack_from(data)
-#         assert magic_cookie == MAGIC_COOKIE, \
+#         assert magic_cookie == stun.MAGIC_COOKIE, \
 #             "Incorrect magic cookie ({:#x})".format(magic_cookie)
         assert msg_length % 4 == 0, \
             "Message not aliged to 4 byte boundary"
@@ -66,10 +66,18 @@ class Message(bytearray):
         while offset < cls._struct.size + msg_length:
             attr_type, attr_length = Attribute.struct.unpack_from(data, offset)
             offset += Attribute.struct.size
-            attr = cls.get_attr_cls(attr_type).decode(data, offset, attr_length)
+            clst = cls.get_attr_cls(attr_type)
+            attr = clst.decode(data, offset, attr_length)
             msg._attributes.append(attr)
-            offset += len(attr)
-            offset += attr.padding
+            #print(clst, type(attr), 'type: %04X/%d'%(attr_type, attr_type), 'offset:', offset, attr)
+            try:
+                offset += len(attr)
+            except:
+                offset += clst._struct.size
+            try:
+                offset += attr.padding
+            except:
+                pass
         return msg
 
     @classmethod
@@ -121,7 +129,7 @@ class Message(bytearray):
                 "magic_cookie={:#010x}, transaction_id={}, attributes={})".format(
                     type(self).__name__, self.msg_method, self.msg_class,
                     len(self) - self._struct.size,
-                    self.magic_cookie, self.transaction_id.encode('hex'),
+                    self.magic_cookie, self.transaction_id.hex(),
                     self._attributes))
 
     def format(self):
@@ -142,6 +150,7 @@ class Attribute(bytes):
     """STUN message attribute structure
     :see: http://tools.ietf.org/html/rfc5389#section-15
     """
+    _struct = struct.Struct('>2H')
     struct = struct.Struct('>2H')
 
     def __new__(cls, data, *args, **kwargs):

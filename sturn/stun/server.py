@@ -19,7 +19,7 @@ class StunUdpServer(StunUdpProtocol):
         response.add_attr(attributes.Fingerprint)
         self.transport.write(response, addr)
         logger.info("%s Sending response", self)
-        logger.debug(response.format())
+        #logger.debug(response.format())
 
     def _stun_binding_request(self, msg, addr):
         if msg.msg_class == stun.CLASS_REQUEST:
@@ -40,7 +40,7 @@ class StunUdpServer(StunUdpProtocol):
                 response.add_attr(attributes.Software, self.software)
         self.transport.write(response, addr)
         logger.info("%s Sending response", self)
-        logger.debug(response.format())
+        #logger.debug(response.format())
 
     def _stun_binding_indication(self, msg, addr):
         pass

@@ -1,5 +1,7 @@
 #!/usr/bin/env vpython3
+import sys
 import socket
+import json
 from sturn import stun
 from sturn.stun import agent, attributes ,authentication
 
@@ -19,18 +21,20 @@ class Demo:
         self.conn.close()
 
     def Request(self, data):
-        print('req', data.format())
         self.conn.sendto(data, (self.host, self.port))
         resp = self.conn.recvfrom(maxMessageSize)
         #import pdb; pdb.set_trace()
         resp = agent.Message.decode(resp[0])
-        print('resp', resp.format())
         return resp
 
 def main():
-    #cls = Demo('192.168.2.104', 3478, '192.168.2.104', 54320)
-    cls = Demo('drugi.trisoft.com.pl', 3478, '192.168.2.104', 54320)
+    with open(sys.argv[1]) as fp:
+        config = json.load(fp)
+    cls = Demo(config['turnhost'], config['turnport'])
     req = agent.Message.encode(stun.METHOD_BINDING, stun.CLASS_REQUEST)
     resp = cls.Request(req)
+
+    address = resp.get_attr(stun.ATTR_XOR_MAPPED_ADDRESS, stun.ATTR_MAPPED_ADDRESS)
+    print('public address: family:{} port:{} address:{}'.format(address.family, address.port, address.address))
 
 main()

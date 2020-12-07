@@ -8,6 +8,8 @@ class ChannelNumber(Attribute):
     """TURN STUN CHANNEL-NUMBER attribute
     :see: http://tools.ietf.org/html/rfc5766#section-14.1
     """
+    type = turn.ATTR_CHANNEL_NUMBER
+
     def __init__(self, data, channel_number):
         self.channel_number = channel_number
 
@@ -15,7 +17,6 @@ class ChannelNumber(Attribute):
     def decode(cls, data, offset, length):
         channel_number = struct.unpack_from('>H2x', data, offset)
         return cls(bytes(data[offset:offset+length]), channel_number)
-    type = turn.ATTR_CHANNEL_NUMBER
 
 
 @attribute
@@ -79,10 +80,15 @@ class EvenPort(Attribute):
     type = turn.ATTR_EVEN_PORT
     RESERVE = 0b10000000
 
+    def __init__(self, evenport):
+        self.evenport = evenport
+
     @classmethod
     def decode(cls, data, offset, length):
         return struct.unpack_from('>B', data, offset)[0] & 0b10000000
 
+    def __repr__(self):
+        return "EVEN-PORT({})".format(self.evenport)
 
 @attribute
 class RequestedTransport(Attribute):

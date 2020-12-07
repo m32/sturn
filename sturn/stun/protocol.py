@@ -60,7 +60,7 @@ class StunUdpProtocol(DatagramProtocol):
         handler = self._handlers.get((msg.msg_method, msg.msg_class))
         if handler:
             logger.info("%s Received STUN", self)
-            logger.debug(msg.format())
+            #logger.debug(msg.format())
             handler(msg, addr)
         else:
             logger.info("%s Received unrecognized STUN", self)

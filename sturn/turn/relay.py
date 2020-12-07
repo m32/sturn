@@ -45,7 +45,7 @@ class Relay(DatagramProtocol):
             self.transport.write(data, addr)
         else:
             logger.warning("No permissions for %s: Dropping Send request", host)
-            logger.debug(data.encode('hex'))
+            logger.debug(data.hex())
 
     def datagramReceived(self, datagram, addr):
         """
@@ -67,7 +67,7 @@ class Relay(DatagramProtocol):
             self.server.transport.write(msg, self.client_addr)
         else:
             logger.warning("No permissions for %s: Dropping datagram", host)
-            logger.debug(datagram.encode('hex'))
+            logger.debug(datagram.hex())
 
 
     def __str__(self):

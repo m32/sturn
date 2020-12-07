@@ -9,7 +9,7 @@ setup(
     requires=['Twisted'],
 
     author='Grzegorz Makarewicz',
-    url='http://www.pexip.com',
+    url='https://github.com/m32/sturn',
 
     license='MIT',
 

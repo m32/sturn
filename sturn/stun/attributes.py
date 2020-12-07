@@ -27,7 +27,7 @@ class Username(Attribute):
         return cls(username.encode('utf8'))
 
     def __repr__(self, *args, **kwargs):
-        return "USERNAME({!r})".format(str(self))
+        return "USERNAME({})".format(str(self))
 
 
 @attribute

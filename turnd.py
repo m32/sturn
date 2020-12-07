@@ -1,8 +1,4 @@
 #!/usr/bin/env vpython3
-"""Usage:
-    {0} INTERFACE [PORT [CONFIG-FILE]]
-"""
-
 import os
 import sys
 import json
@@ -19,22 +15,14 @@ except:
     logging.exception("Failed to load 'logging.config' file")
 
 
-interface = '192.168.2.104'
-port = 3478
-config_file = 'example.config'
-
-
-try:
-    with open(config_file) as fp:
-        config = json.load(fp)
-    software = config['software']
-    realm = bytes(config['realm'].encode('utf-8'))
-    users = config['users']
-    overrides = config.get('overrides') or {}
-except:
-    logging.exception("Failed to load config from %s", config_file)
-    exit(1)
-
+with open(sys.argv[1]) as fp:
+    config = json.load(fp)
+software = config['software']
+realm = bytes(config['realm'].encode('utf-8'))
+users = config['users']
+overrides = config.get('overrides') or {}
+interface = config['turnhost']
+port = config['turnport']
 
 credential_mechanism = LongTermCredentialMechanism(realm, users)
 server = TurnUdpServer(reactor, interface, port, software, credential_mechanism, overrides)
