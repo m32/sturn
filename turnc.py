@@ -195,7 +195,7 @@ class Demo:
 def main():
     with open(sys.argv[1]) as fp:
         config = json.load(fp)
-    secret = config['realm']
+    secret = config['secret']
     username = config['username']
     userpass = config['userpass']
     remotehost = config['turnhost']
